@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Student Performance</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h2>Welcome to Student Performance Dashboard</h2>
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+    <h3>Average Scores by Subject</h3>
+    <canvas id="subjectChart" width="400" height="200"></canvas>
+
+    <h3>Math Scores by Student</h3>
+    <canvas id="studentChart" width="400" height="200"></canvas>
+
+    <script>
+        const subjectCtx = document.getElementById('subjectChart').getContext('2d');
+        const subjectChart = new Chart(subjectCtx, {
+            type: 'bar',
+            data: {
+                labels: {{ subjects|tojson }},
+                datasets: [{
+                    label: 'Average Score',
+                    data: {{ avg_scores|tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                }]
+            }
+        });
+
+        const studentCtx = document.getElementById('studentChart').getContext('2d');
+        const studentChart = new Chart(studentCtx, {
+            type: 'line',
+            data: {
+                labels: {{ students|tojson }},
+                datasets: [{
+                    label: 'Math Score',
+                    data: {{ math_scores|tojson }},
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    fill: false
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
